@@ -8,7 +8,6 @@ public class MazeSpawner : MonoBehaviour
     public int mazeWidth = 20;
     public int mazeHeight = 20;
 
-    //public HintRenderer HintRenderer;
 
     public Maze maze;
 
@@ -25,9 +24,8 @@ public class MazeSpawner : MonoBehaviour
 
                 c.WallLeft.SetActive(maze.cells[x, y].WallLeft);
                 c.WallBottom.SetActive(maze.cells[x, y].WallBottom);
+                c.Floor.SetActive(maze.cells[x, y].Floor);
             }
         }
-
-        //HintRenderer.DrawPath();
     }
 }

@@ -2,24 +2,26 @@ using UnityEngine;
 
 public class TempPlayerController : MonoBehaviour
 {
-    private Rigidbody _rb;
     [SerializeField] private float moveSpeed = 15f;
+    [SerializeField] private float betterControlBuffTime = 10f;
+    private float _tempBetterControlBuffTime = 10f;
 
-    private float betterControlBuffTime;
-    private PlayerController originalController;
+    private Rigidbody _rb;
+    private PlayerController _originalController;
+
+
+    private void Start()
+    {
+        _rb = GetComponent<Rigidbody>();
+        _originalController = GetComponent<PlayerController>();
+    }
+
 
     private void OnEnable()
     {
-        betterControlBuffTime = GetComponent<BuffStats>().BetterControlBuffTime;
-        _rb = GetComponent<PlayerController>().rb;
-        originalController = GetComponent<PlayerController>();
+        _tempBetterControlBuffTime = betterControlBuffTime;
     }
 
-    //private void Start()
-    //{
-    //    _rb = GetComponent<Rigidbody>();
-    //    originalController = GetComponent<PlayerController>();
-    //}
 
     private void FixedUpdate()
     {
@@ -30,11 +32,11 @@ public class TempPlayerController : MonoBehaviour
 
         _rb.linearVelocity = direction * moveSpeed * Time.fixedDeltaTime;
 
-        betterControlBuffTime -= Time.fixedDeltaTime;
+        _tempBetterControlBuffTime -= Time.fixedDeltaTime;
 
-        if (betterControlBuffTime <= 0)
+        if (_tempBetterControlBuffTime <= 0)
         {
-            originalController.enabled = true;
+            _originalController.enabled = true;
             this.enabled = false;
         }
     }

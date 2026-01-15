@@ -10,7 +10,6 @@ public class MazeGenerator
 
     public Maze GenerateMaze()
     {
-        //Width = Object.FindAny
         MazeGeneratorCell[,] cells = new MazeGeneratorCell[Width, Height];
 
         for (int x = 0; x < cells.GetLength(0); x++)
@@ -32,6 +31,15 @@ public class MazeGenerator
         }
 
         RemoveWallsWithBacktracker(cells);
+
+        for (int x = 0; x < cells.GetLength(0); x++)
+        {
+            cells[x, cells.GetLength(1) - 1].Floor = false;
+        }
+        for (int y = 0; y < cells.GetLength(1) - 1; y++)
+        {
+            cells[cells.GetLength(0) - 1, y].Floor = false;
+        }
 
         Maze maze = new Maze();
 

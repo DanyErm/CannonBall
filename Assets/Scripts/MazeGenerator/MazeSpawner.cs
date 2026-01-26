@@ -13,7 +13,7 @@ public class MazeSpawner : MonoBehaviour
 
     private void Start()
     {
-        MazeGenerator generator = new MazeGenerator();
+        MazeGenerator generator = new MazeGenerator(mazeWidth, mazeHeight);
         maze = generator.GenerateMaze();
 
         for (int x = 0; x < maze.cells.GetLength(0); x++)

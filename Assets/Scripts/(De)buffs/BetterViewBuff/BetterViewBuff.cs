@@ -2,63 +2,55 @@ using UnityEngine;
 
 public class BetterViewBuff : MonoBehaviour
 {
-    [SerializeField] private float motionSpeed = 5f;
-    [SerializeField] private float waitingTime = 3f;
-    [SerializeField] private Vector3 originalPos;
+    public float movementTimer = 3f;
+    public float standingStillTimer = 3f;
+
+    private PlayerController _playerController;
+    private TempPlayerController _tempPlayerController;
+    private Rigidbody _rb;
+
     [SerializeField] private Camera mainCamera;
-    private Vector3 betterViewPos;
-    private bool isCamInBetterViewPos;
+    private CameraController _cameraController;
+    private TempCameraController _tempCameraController;
+
+    [HideInInspector] public bool isTempPlayerControllerTurnedOn = false;
+
 
     private void Start()
     {
-        //originalPos = GetComponent<Transform>().position;
-        betterViewPos = CalculateBetterViewPos();
+        _playerController = GetComponent<PlayerController>();
+        _tempPlayerController = GetComponent<TempPlayerController>();
+        _rb = GetComponent<Rigidbody>();
+
+        _cameraController = mainCamera.GetComponent<CameraController>();
+        _tempCameraController = mainCamera.GetComponent<TempCameraController>();
     }
+
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("BetterViewBuff"))
         {
-            TurnCharMovement(false);
-            TurnCameraController(false);
-            MoveConstantlyFromAToB();
-        }
-    }
-
-    private void Update()
-    {
-        if (isCamInBetterViewPos)
-        {
-            if(Input.anyKeyDown)
+            if (_playerController.isActiveAndEnabled && !_tempPlayerController.isActiveAndEnabled)
             {
-                waitingTime = 0;
+                isTempPlayerControllerTurnedOn = false;
             }
-            if (waitingTime <= 0)
+            else if (!_playerController.isActiveAndEnabled && _tempPlayerController.isActiveAndEnabled)
             {
-                //CalculateBetterViewPos()  Ќазад на прежнее место
+                isTempPlayerControllerTurnedOn = true;
             }
-        }
-    }
 
+            _playerController.enabled = false;
+            _tempPlayerController.enabled = false;
 
-    private Vector3 CalculateBetterViewPos()    // ”знать, как найти Y местоположени€ камеры, с которого будет виден весь лабиринт
-    {
-        float cameraFieldOfView = mainCamera.fieldOfView;
-        return Vector3.zero;
-    }
+            _rb.linearVelocity = Vector3.zero;
+            _rb.angularVelocity = Vector3.zero;
+            _rb.Sleep();
+            _rb.WakeUp();
 
-    void TurnCharMovement(bool willBeTurnedOn)
-    {
+            _cameraController.enabled = false;
 
-    }
-
-    void TurnCameraController(bool willBeTurnedOn)
-    {
-
-    }
-
-    private void MoveConstantlyFromAToB()
-    {
-
+            _tempCameraController.enabled = true;
+        } 
     }
 }

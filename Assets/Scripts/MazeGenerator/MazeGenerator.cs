@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class MazeGenerator
 {
-    public int Width;
-    public int Height;
+    private int Width;
+    private int Height;
 
 
     public MazeGenerator(int width, int height)
@@ -13,7 +13,7 @@ public class MazeGenerator
         Width = width + 1;
         Height = height + 1;
     }
-
+    
 
     public Maze GenerateMaze()
     {
@@ -39,6 +39,7 @@ public class MazeGenerator
 
         RemoveWallsWithBacktracker(cells);
 
+
         for (int x = 0; x < cells.GetLength(0); x++)
         {
             cells[x, cells.GetLength(1) - 1].Floor = false;
@@ -47,6 +48,7 @@ public class MazeGenerator
         {
             cells[cells.GetLength(0) - 1, y].Floor = false;
         }
+
 
         Maze maze = new Maze();
 

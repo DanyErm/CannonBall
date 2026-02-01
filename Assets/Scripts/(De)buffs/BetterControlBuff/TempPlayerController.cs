@@ -25,12 +25,26 @@ public class TempPlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        var horizontal = Input.GetAxis("Horizontal");
-        var vertical = Input.GetAxis("Vertical");
+        var horizontal = 0f;
+        var vertical = 0f;
 
-        Vector3 direction = new Vector3(horizontal, 0, vertical).normalized;
 
-        _rb.linearVelocity = direction * moveSpeed * Time.fixedDeltaTime;
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
+            vertical = 1f;
+
+        if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
+            vertical = -1f;
+
+        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+            horizontal = 1f;
+
+        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+            horizontal = -1f;
+
+
+            Vector3 direction = new Vector3(horizontal, 0, vertical).normalized;
+            _rb.linearVelocity = direction * moveSpeed * Time.fixedDeltaTime;
+
 
         _tempBetterControlBuffTime -= Time.fixedDeltaTime;
 
